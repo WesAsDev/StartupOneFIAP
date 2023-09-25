@@ -66,6 +66,9 @@ public class UsuarioResource {
     //FIXME: Concertar atualização de usuario que atualiza a senha sem hash
     @PutMapping({"{id}"})
     public ResponseEntity<String> atualizarUsuario(@RequestBody UsuarioModel user, @PathVariable Integer id){
+        String hashSenha = PasswordUtils.hashPassword(user.getSenha());
+
+        user.setSenha(hashSenha);
         user.setId(id);
         user = usuarioRepo.save(user);
         return ResponseEntity.ok("Usuario "+ user.getEmail() +" atualizado com sucesso") ;

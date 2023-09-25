@@ -1,18 +1,20 @@
 package br.com.fiap.WKStartupOne.Controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.service.annotation.PatchExchange;
 
 import br.com.fiap.WKStartupOne.Model.ServicoModel;
+import br.com.fiap.WKStartupOne.Model.UsuarioModel;
 import br.com.fiap.WKStartupOne.Repository.ServicoRepository;
+import br.com.fiap.WKStartupOne.Repository.UsuarioRepository;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +27,10 @@ public class ServicoResource {
 
     @Autowired
     private ServicoRepository servicoRepo;
+
+    @Autowired
+    UsuarioRepository usuarioRepo;
+    
 
     @GetMapping
     public List<ServicoModel> buscarTodos(){
@@ -44,6 +50,20 @@ public class ServicoResource {
     }
 
     //TODO: Criar rota para deletar servico
-    
+    @DeleteMapping("{id}")
+    public void deletarServico(@PathVariable Integer id) {
+        servicoRepo.deleteById(id);
+    }
 
+    //TODO: Pegar todos os servicos por Profissional
+    @GetMapping("/profissional/{id}")
+    public List<ServicoModel> getProfissionalServicos(@PathVariable Integer id) {
+        return usuarioRepo.findById(id).get().getServicosProfissional();
+    }
+
+    //TODO: Pegar todos os servicos por Cliente
+    @GetMapping("/cliente/{id}")
+    public List<ServicoModel> getClienteServicos(@PathVariable Integer id) {
+        return usuarioRepo.findById(id).get().getServicosCliente();
+    }
 }

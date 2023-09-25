@@ -1,6 +1,5 @@
 package br.com.fiap.WKStartupOne.Model;
 
-import java.security.KeyStore.PasswordProtection;
 import java.util.ArrayList;
 import java.util.List;
 
